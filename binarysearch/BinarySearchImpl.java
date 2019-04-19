@@ -15,7 +15,7 @@ public class BinarySearchImpl {
         int high = arr.length - 1;
         while (low <= high) {
             //avoid over flow for large numbers
-            int mid = (low + high) >> 1;
+            int mid = (low + high) >>> 1;
 
             if (arr[mid] == key) {
                 return true;
@@ -35,7 +35,7 @@ public class BinarySearchImpl {
             return false;
         }
 
-        int mid = (low + high) >> 1;
+        int mid = (low + high) >>> 1;
 
         if (arr[mid] == key) {
             return true;
