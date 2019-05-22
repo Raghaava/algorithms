@@ -7,7 +7,7 @@ public class SubArrayWithMaxSum_Kadanes {
         System.out.println(findSubArrayWithMaxSum(arr, 0, arr.length - 1));
     }
 
-    //O(nlogn)
+    //O(n)
     private static int findSubArrayWithMaxSum(int[] arr, int left, int right) {
 
         int ans = 0;
