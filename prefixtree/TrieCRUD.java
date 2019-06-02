@@ -1,31 +1,24 @@
 package org.interview.preperation.prefixtree;
 
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
+/**
+ * Insert and search costs O(key_length), however the memory requirements of Trie is O(ALPHABET_SIZE * key_length * N)
+ * where N is number of keys in Trie.
+ *
+ * 1) Sorting array of strings (or words) using Trie (Handling Duplicates)
+ */
 public class TrieCRUD {
-    static class TrieNode {
-        Map<Character, TrieNode> children;
-        boolean isEndOfWord;
-
-        TrieNode() {
-            children = new HashMap<>();
-        }
-    }
-
     public static void main(String... args) {
-        String[] words = new String[]{"abcd", "cat", "dog", "xyz"};
+        String[] words = new String[]{"xyz", "cat", "abcd", "abcd","dog", "ab"};
 
         TrieNode root = new TrieNode();
 
         Arrays.asList(words).stream().forEach(word -> constructRecessive(word, root));
 
-        Arrays.asList(words).stream().forEach(word -> System.out.println(searchWord(word, root)));
+        // Arrays.asList(words).stream().forEach(word -> System.out.println(searchWord(word, root)));
 
-        System.out.println(searchWord("test", root));
-        System.out.println(searchPrefix("ab", root));
-        System.out.println(searchPrefix("cd", root));
+        display(root, "");
     }
 
     private static void construct(String word, TrieNode root) {
@@ -34,8 +27,11 @@ public class TrieCRUD {
         }
 
         for (Character ch : word.toCharArray()) {
-            TrieNode node = new TrieNode();
-            root.children.putIfAbsent(ch, node);
+            TrieNode node = root.children.get(word.charAt(0));
+            if (node == null) {
+                node = new TrieNode();
+            }
+            root.children.put(word.charAt(0), node);
             root = node;
         }
         root.isEndOfWord = true;
@@ -47,8 +43,11 @@ public class TrieCRUD {
             return;
         }
 
-        TrieNode node = new TrieNode();
-        root.children.putIfAbsent(word.charAt(0), node);
+        TrieNode node = root.children.get(word.charAt(0));
+        if (node == null) {
+            node = new TrieNode();
+        }
+        root.children.put(word.charAt(0), node);
         root = node;
         constructRecessive(word.substring(1), root);
     }
@@ -83,5 +82,18 @@ public class TrieCRUD {
         }
 
         return true;
+    }
+
+    private static void display(TrieNode root, String word) {
+        if (root == null) {
+            return;
+        }
+
+        if (root.isEndOfWord) {
+            System.out.println(word);
+        }
+        root.children.entrySet().stream().forEach(entry -> {
+            display(entry.getValue(), word + entry.getKey());
+        });
     }
 }
